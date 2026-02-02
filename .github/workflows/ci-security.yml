@@ -1,0 +1,60 @@
+name: CI Security
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Terraform fmt check
+        run: |
+          cd terraform/envs/dev
+          terraform fmt -check -recursive
+
+      - name: Trivy - filesystem scan (repo)
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          scan-type: "fs"
+          scan-ref: "."
+          format: "sarif"
+          output: "trivy-fs.sarif"
+          severity: "HIGH,CRITICAL"
+          exit-code: "1"
+
+      - name: Trivy - IaC scan (Terraform)
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          scan-type: "config"
+          scan-ref: "terraform"
+          format: "sarif"
+          output: "trivy-iac.sarif"
+          severity: "HIGH,CRITICAL"
+          exit-code: "1"
+
+      - name: Trivy - SBOM (SPDX)
+        uses: aquasecurity/trivy-action@0.20.0
+        with:
+          scan-type: "fs"
+          scan-ref: "."
+          format: "spdx-json"
+          output: "sbom.spdx.json"
+          exit-code: "0"
+
+      - name: Upload scan artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-artifacts
+          path: |
+            trivy-fs.sarif
+            trivy-iac.sarif
+            sbom.spdx.json
