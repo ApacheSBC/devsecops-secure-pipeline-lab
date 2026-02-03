@@ -31,3 +31,11 @@ A portfolio project demonstrating a secure CI pipeline for Infrastructure as Cod
  devsecops-secure-pipeline-lab
 Prove you can build a secure CI/CD pipeline that deploys real AWS infrastructure via Terraform, with security gates.
 
+## CI Evidence
+
+### GitHub Actions Runs
+![CI Security Workflow Runs](assets/Screenshot 2026-02-03 at 17.42.52.png)
+
+### SBOM Output (SPDX)
+![Trivy SBOM Output](assets/Screenshot 2026-02-03 at 17.43.36.png)
+
