@@ -2,6 +2,8 @@
 
 A portfolio project demonstrating a secure CI pipeline for Infrastructure as Code (Terraform) with automated security scanning and severity gating.
 
+📘 **Runbook / Notes:** [docs/devsecops-runbook.docx](docs/devsecops-runbook.docx)
+
 ## What this demonstrates
 - GitHub Actions CI with security scanning (Trivy)
 - Terraform IaC structure (modules + envs)
