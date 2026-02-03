@@ -1,0 +1,37 @@
+name: Terraform - PR Plan
+
+on:
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  terraform-plan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.5
+
+      - name: Terraform fmt (check)
+        run: terraform fmt -check -recursive
+
+      - name: Terraform init (no backend)
+        run: terraform init -backend=false
+
+      - name: Terraform validate
+        run: terraform validate
+
+      # Plan is optional if your configuration requires cloud creds (AWS, etc.)
+      # If you already use credentials in CI, this will work. If not, it will be skipped.
+      - name: Terraform plan (best-effort)
+        continue-on-error: true
+        run: terraform plan -input=false -no-color
+
