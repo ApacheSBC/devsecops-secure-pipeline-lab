@@ -27,7 +27,7 @@ jobs:
           terraform fmt -check -recursive
 
       - name: Trivy - filesystem scan (repo)
-        uses: aquasecurity/trivy-action@0.20.0
+        uses: aquasecurity/trivy-action@0.34.1
         with:
           scan-type: "fs"
           scan-ref: "."
@@ -37,7 +37,7 @@ jobs:
           exit-code: "0"
 
       - name: Trivy - IaC scan (Terraform)
-        uses: aquasecurity/trivy-action@0.20.0
+        uses: aquasecurity/trivy-action@0.34.1
         with:
           scan-type: "config"
           scan-ref: "terraform"
@@ -47,7 +47,7 @@ jobs:
           exit-code: "0"
 
       - name: Trivy - SBOM (SPDX)
-        uses: aquasecurity/trivy-action@0.20.0
+        uses: aquasecurity/trivy-action@0.34.1
         with:
           scan-type: "fs"
           scan-ref: "."
